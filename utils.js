@@ -1,8 +1,8 @@
 /*
  * Usage: require this file, ex.
- *   var util = require("util.js");
+ *   var utils = require("utils.js");
  *   var publicAttrs = ['nickname', 'mood', 'inviteCode'];
- *   util.filterUserData(publicAttrs, data); 
+ *   utils.filterUserData(publicAttrs, data); 
  *   // please left the path parameter blank, its for circular detection.
  * Data could be anything that might contain user data, 
  * say ParseObject that has ParseUser attributes, or array of ParseObjects.
