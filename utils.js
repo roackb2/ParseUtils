@@ -1,5 +1,6 @@
 'use strict';
 
+// polyfill for array every
 exports.every = function(arr, satisfy) {
     var value = true;
     for (var i = 0; i < arr.length; i++) {
@@ -10,6 +11,7 @@ exports.every = function(arr, satisfy) {
     return value;
 }
 
+// polyfill for array somer
 exports.some = function(arr, satisfy) {
     var value = false;
     for (var i = 0; i < arr.length; i++) {
@@ -20,6 +22,7 @@ exports.some = function(arr, satisfy) {
     return value;
 }
 
+//  shuffle array
 exports.shuffle = function(array) {
     var currentIndex = array.length;
     var temporaryValue;
@@ -37,7 +40,7 @@ exports.shuffle = function(array) {
     return array;
 }
 
-
+// generate uuid-like string
 exports.uuid = function() {
     function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -50,6 +53,7 @@ exports.uuid = function() {
 }
 
 
+// rolling dice to decide true or false, given possibility
 exports.rollDice = function(possibility) {
     var random = Math.floor(Math.random() * 1000);
     var limit = possibility * 1000;
@@ -57,7 +61,10 @@ exports.rollDice = function(possibility) {
 }
 
 
-
+/*
+ *  Asynchronous for loop.
+ *  
+ */
 exports.WaterFall = function() {
     this.functions = [];
     this.params = [];
@@ -92,16 +99,17 @@ exports.WaterFall = function() {
 
 }
 
-/*
-logic: 
 
-var params = [...];
-var result = task.apply(this, params);
-while(satisfy(result))  {
-    result = task.apply(this, params);
-    postTask(params);
-}
-*/
+/*
+ * logic: 
+ *
+ * var params = [...];
+ * var result = task.apply(this, params);
+ * while(satisfy(result))  {
+ *    result = task.apply(this, params);
+ *    postTask(params);
+ * }
+ */
 exports.AsyncWhile = function(task, satisfy, postTask, autoRetry) {
     this.task = task;
     this.postTask = postTask;
@@ -136,6 +144,12 @@ exports.AsyncWhile = function(task, satisfy, postTask, autoRetry) {
     }
 }
 
+
+/*
+ *  unlimited query, can query for larger than 10,000
+ *  documents. 
+ *  limitation: no sort, skip, limit supported
+ */
 exports.query = function(clss, callback) {
     var quantum = 1000;
     var pipeSize = 10;
@@ -236,6 +250,7 @@ exports.decodeUTF8 = function(s) {
     return decodeURIComponent(escape(s));
 }
 
+// stringify objects and print on console
 exports.print = function(obj, ignoreFunc, printFuncContent) {
     console.log(stringify(obj, ignoreFunc, printFuncContent));
 }
@@ -336,6 +351,7 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
     }
     return result;
 }
+
 
 
 
