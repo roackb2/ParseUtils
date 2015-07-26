@@ -1,2 +1,2 @@
 # ParseUtils
-some utils whiel using Parse
+some utils while using Parse
