@@ -1,6 +1,7 @@
 var utils = require("utils.js");
 var WaterFall = utils.WaterFall;
 var AsyncWhile = utils.AsyncWhile;
+var query = utils.query
 
 // example for WaterFall
 function waterFallExample() {
