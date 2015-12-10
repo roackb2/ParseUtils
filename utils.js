@@ -273,18 +273,9 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
         path = [];
     }
 
-    var prefix = "";
-    for (var i = 0; i < depth; i++) {
-        prefix += indent;
-    }
-
+    var prefix = "" + new Array(depth + 1).join(indent);
+    var encountered = (path.indexOf(obj) !== -1);
     path.push(obj);
-    var encountered = false;
-    for(var i = 0; i < path.length - 1; i++) {
-        if(path[i] === obj) {
-            encountered = true;
-        }
-    }
 
     var result = former;
     if (Object.prototype.toString.call(obj) === '[object Array]' || Object.prototype.toString.call(obj) === '[object Arguments]') {
@@ -347,10 +338,11 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
             var lastLine = lines[lines.length - 1];
             var lasIndent = lastLine.replace(lastLine.trim(), "")
             for(var i = 0; i < lines.length; i++) {
-                if (i !== 0) {
-                    funcContent += prefix;
+                if (i === 0) {
+                    funcContent += lines[i];
+                } else {
+                    funcContent += prefix + lines[i].substring(lasIndent.length, lines[i].length);
                 }
-                funcContent += lines[i].replace(lasIndent, "");
                 if (i !== lines.length - 1) {
                     funcContent += "\n";
                 }
@@ -364,7 +356,6 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
     }
     return result;
 }
-
 
 
 /*
