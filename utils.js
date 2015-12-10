@@ -287,7 +287,7 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
     }
 
     var result = former;
-    if (Array.isArray(obj)) {
+    if (Object.prototype.toString.call(obj) === '[object Array]' || Object.prototype.toString.call(obj) === '[object Arguments]') {
         if (!encountered) {
             if(obj.length > 0) {
                 result += "[\n";
@@ -307,13 +307,13 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
         } else {
             result += "[Circular]";
         }
-    } else if (typeof(obj) == "object") {
+    } else if (Object.prototype.toString.call(obj) === '[object Object]') {
         if (!encountered) {
             var count = 0;
             var totalCount = 0;
             for (var key in obj) {
                 totalCount++;
-                if (typeof(obj[key]) != "function" || !ignoreFunc) {
+                if (Object.prototype.toString.call(obj[key]) === '[object Function]' || !ignoreFunc) {
                     count++;
                 }
             }
@@ -322,7 +322,7 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
                 var counter = 0;
                 for (var key in obj) {
                     var value = obj[key];
-                    if (typeof(value) != "function" || !ignoreFunc) {
+                    if (Object.prototype.toString.call(value) === '[object Function]' || !ignoreFunc) {
                         counter++;
                         result += prefix + indent + key + ": " + stringify(value, ignoreFunc, printFuncContent, "", depth + 1, [].concat(path));
                         if (counter < count) {
@@ -340,9 +340,22 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
         } else {
             result += "[Circular]"
         }
-    } else if (typeof(obj) == "function") {
+    } else if (Object.prototype.toString.call(obj) === '[object Function]') {
         if (printFuncContent) {
-            result += obj;
+            var lines = ("" + obj).split("\n");
+            var funcContent = "";
+            var lastLine = lines[lines.length - 1];
+            var lasIndent = lastLine.replace(lastLine.trim(), "")
+            for(var i = 0; i < lines.length; i++) {
+                if (i !== 0) {
+                    funcContent += prefix;
+                }
+                funcContent += lines[i].replace(lasIndent, "");
+                if (i !== lines.length - 1) {
+                    funcContent += "\n";
+                }
+            }
+            result += funcContent;
         } else {
             result += "_function_";
         }
@@ -351,7 +364,6 @@ function stringify(obj, ignoreFunc, printFuncContent, former, depth, path) {
     }
     return result;
 }
-
 
 
 
